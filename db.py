@@ -42,17 +42,18 @@ def import_from_csv_to_db():
                         print(f"    Product information is in database and more current, import of item cancelled - {cleaned_data['product_name']}")
                     continue
             else:
+                # Product does not exist
                 if settings.DEBUG:
                     print(f"    Product not in database, good to upload: {cleaned_data['product_name']}")
 
-            product = Products(
-                product_name=cleaned_data['product_name'],
-                product_quantity=cleaned_data['product_quantity'],
-                product_price=cleaned_data['product_price'],
-                date_updated=cleaned_data['date_updated']
-            )
+                product = Products(
+                    product_name=cleaned_data['product_name'],
+                    product_quantity=cleaned_data['product_quantity'],
+                    product_price=cleaned_data['product_price'],
+                    date_updated=cleaned_data['date_updated']
+                )
 
-            session.add(product)
+                session.add(product)
 
     if settings.DEBUG:
         new_products = session.new
