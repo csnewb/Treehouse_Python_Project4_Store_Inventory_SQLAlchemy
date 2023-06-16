@@ -11,5 +11,5 @@ class Products(Base):
     product_id = Column(Integer, primary_key=True)
     product_name = Column(String)
     product_quantity = Column(Integer)
-    product_price = Column(Float)
+    product_price = Column(Integer)
     date_updated = Column(Date)

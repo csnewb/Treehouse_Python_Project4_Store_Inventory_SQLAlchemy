@@ -88,7 +88,7 @@ def get_single_item():
     Product Name: {query.product_name}
     Product ID: {query.product_id}
     Product Qty: {query.product_quantity}
-    Product Price: ${'{:.2f}'.format(query.product_price)}
+    Product Price: ${query.product_price/100}
     Last Updated: {query.date_updated}
     """
     print(print_statement)

@@ -14,9 +14,10 @@ def data_cleaner(row):
     try:
         product_price = row[1]
         product_price = product_price.split("$")[1]
-        product_price = float(product_price)
+        product_price = int(round(float(product_price), 2) * 100)
+
     except:
-        print(f"  error converting product_price to float for {product_name}")
+        print(f"  error converting product_price to int for {product_name}")
         product_price = row[1]
 
     try:
@@ -105,10 +106,11 @@ def get_valid_product_price(prompt):
         try:
             choice = float(input(prompt))
             if choice > 0:
-                choice = round(choice, 2)
+                choice = round(choice * 100, 0)
+                choice = int(choice)
                 break
         except:
-            print(f"ERROR: Please choose a valid price greate than $0.00")
+            print(f"ERROR: Please choose a valid float price greater than 0.00 DO NOT include the $")
     return choice
 
 
