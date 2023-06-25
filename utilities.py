@@ -74,6 +74,10 @@ def force_int_product_id(prompt, valid_choices):
                     print(f"Error. Selection cannot be blank spaces. Please try again.")
                 elif any(char.isalpha() for char in choice):
                     print(f"Error. Product Id cannot contain any letters. Please try again.")
+                elif choice == "":
+                    print("Error. Empty selection made. Please try again.")
+                elif choice not in valid_choices:
+                    print(f"Error. That product_id does not exist. Please try again")
             else:
                 print(f"ERROR: Selection is not a valid product_id, please try again.")
     return choice
@@ -92,12 +96,23 @@ def get_valid_product_qty(prompt):
 
 def get_valid_product_name(prompt):
     while True:
+        custom_error = False
         try:
             choice = input(prompt)
             name_available = db.check_if_name_available(choice)
             if name_available:
                 if choice.isspace():
+                    custom_error = True
                     raise ValueError(f"ERROR: The product name cannot contain empty spaces.")
+                elif type(choice) != str:
+                    custom_error = True
+                    raise ValueError(f"ERROR: The product name must be a string.")
+                elif choice == "":
+                    custom_error = True
+                    raise ValueError(f"ERROR: The product name cannot be empty.")
+                elif choice.isdigit() or choice.replace(".", "").isdigit():
+                    custom_error = True
+                    raise ValueError(f"ERROR: The product name cannot be just a float or integer.")
                 return choice, False
             else:
                 print(f"ERROR: That product name is currently in use.")
@@ -110,8 +125,11 @@ def get_valid_product_name(prompt):
                     return choice, True
                 else:
                     print("Please choose a unique product_name")
-        except:
-            print(f"ERROR: exception with product_name. Please try again.")
+        except Exception as e:
+            if custom_error:
+                print(e)
+            else:
+                print(f"ERROR: exception with product_name. Please try again.")
 
 
 def get_valid_product_price(prompt):
